@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Frames - DCB Office AI Automation</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .frames-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .frame-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .frame-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .frame-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--bg);
+        }
+
+        .frame-content {
+            padding: 1rem;
+        }
+
+        .frame-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .frame-timestamp {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 0.5rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.5rem 1rem;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--accent);
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="logo">🤖</span>
+                <span class="brand-text">DCB Office AI</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">← Back to Proposal</a>
+                <a href="transcript.html" class="nav-link">Transcripts</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="section" style="margin-top: 4rem;">
+        <div class="container">
+            <div class="section-header">
+                <h1 class="section-title">Meeting Frames</h1>
+                <p class="section-subtitle">
+                    Key moments from our discovery calls with Nadeer — March 9 & 18, 2026
+                </p>
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Frames</button>
+                <button class="filter-btn" data-filter="ui">UI Demos</button>
+                <button class="filter-btn" data-filter="discussion">Discussions</button>
+                <button class="filter-btn" data-filter="tools">Tools</button>
+            </div>
+
+            <div class="frames-grid" id="framesGrid">
+                <!-- Frame 1 -->
+                <div class="frame-card" data-category="ui" onclick="openModal(this)">
+                    <div class="frame-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        🖥️
+                    </div>
+                    <div class="frame-content">
+                        <div class="frame-title">Nadeer's Prototype UI Mockup</div>
+                        <div class="frame-timestamp">00:15:32 — March 18, 2026</div>
+                    </div>
+                </div>
+
+                <!-- Frame 2 -->
+                <div class="frame-card" data-category="discussion" onclick="openModal(this)">
+                    <div class="frame-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        💬
+                    </div>
+                    <div class="frame-content">
+                        <div class="frame-title">Current Workflow Discussion</div>
+                        <div class="frame-timestamp">00:08:15 — March 9, 2026</div>
+                    </div>
+                </div>
+
+                <!-- Frame 3 -->
+                <div class="frame-card" data-category="tools" onclick="openModal(this)">
+                    <div class="frame-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        🔧
+                    </div>
+                    <div class="frame-content">
+                        <div class="frame-title">Canva Proposal Templates</div>
+                        <div class="frame-timestamp">00:22:45 — March 18, 2026</div>
+                    </div>
+                </div>
+
+                <!-- Frame 4 -->
+                <div class="frame-card" data-category="ui" onclick="openModal(this)">
+                    <div class="frame-image" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        📊
+                    </div>
+                    <div class="frame-content">
+                        <div class="frame-title">Dashboard Concept Sketch</div>
+                        <div class="frame-timestamp">00:18:20 — March 18, 2026</div>
+                    </div>
+                </div>
+
+                <!-- Frame 5 -->
+                <div class="frame-card" data-category="discussion" onclick="openModal(this)">
+                    <div class="frame-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        🎯
+                    </div>
+                    <div class="frame-content">
+                        <div class="frame-title">5x Revenue Growth Goal</div>
+                        <div class="frame-timestamp">00:05:10 — March 9, 2026</div>
+                    </div>
+                </div>
+
+                <!-- Frame 6 -->
+                <div class="frame-card" data-category="tools" onclick="openModal(this)">
+                    <div class="frame-image" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        🛠️
+                    </div>
+                    <div class="frame-content">
+                        <div class="frame-title">BuilderTrend Integration</div>
+                        <div class="frame-timestamp">00:28:55 — March 18, 2026</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header" style="margin-top: 4rem;">
+                <p class="section-subtitle">
+                    <strong>Note:</strong> These are placeholder frames. The actual meeting frames from the video call are available in the full NotebookLM analysis.
+                    <br><br>
+                    <a href="https://notebooklm.google.com/notebook/d1381798-3681-4773-b644-49bd2e3ee412" target="_blank" style="color: var(--accent);">
+                        View Complete Analysis in NotebookLM →
+                    </a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <img id="modalImage" class="modal-image" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const frames = document.querySelectorAll('.frame-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active state
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filter = button.dataset.filter;
+
+                // Filter frames
+                frames.forEach(frame => {
+                    if (filter === 'all' || frame.dataset.category === filter) {
+                        frame.style.display = 'block';
+                        setTimeout(() => {
+                            frame.style.opacity = '1';
+                            frame.style.transform = 'scale(1)';
+                        }, 10);
+                    } else {
+                        frame.style.opacity = '0';
+                        frame.style.transform = 'scale(0.9)';
+                        setTimeout(() => {
+                            frame.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Modal functionality
+        function openModal(card) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const image = card.querySelector('.frame-image');
+            
+            // For now, just show a placeholder
+            // In production, this would load the actual frame image
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+        }
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>

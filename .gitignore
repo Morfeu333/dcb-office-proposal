@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+._*
+
+# Logs
+*.log
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local env
+.env
+
+# Build outputs (if any)
+dist/
+build/
+
+# Thumbnails
+Thumbs.db
